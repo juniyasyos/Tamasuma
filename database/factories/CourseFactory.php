@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Course;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,9 +21,10 @@ class CourseFactory extends Factory
     {
 
         return [
-            'title' => $this->faker->sentence(4),
+            'title' => $this->faker->sentence(3),
             'description' => $this->faker->paragraph,
-            // 'instructor_id' => User::factory()->create(['role' => 'instructor'])->id,
+            'thumbnail' => $this->faker->imageUrl(640, 480, 'education', true),
+            'is_active' => $this->faker->boolean(90),
         ];
     }
 }

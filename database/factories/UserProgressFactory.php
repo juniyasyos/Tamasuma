@@ -17,7 +17,7 @@ class UserProgressFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'completed_at' => now(),
         ];
     }
 }

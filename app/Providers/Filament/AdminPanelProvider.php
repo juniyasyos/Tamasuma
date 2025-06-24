@@ -58,8 +58,7 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->resources([
-                UserResource::class,
-                CourseResource::class,
+                UserResource::class
             ]);
     }
 }

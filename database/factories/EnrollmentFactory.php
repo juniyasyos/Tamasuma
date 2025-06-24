@@ -17,7 +17,8 @@ class EnrollmentFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'enrolled_at' => $this->faker->dateTimeBetween('-30 days', 'now'),
+            'completed' => false,
         ];
     }
 }

@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
+use App\Models\CourseModule as Module;
+use App\Models\Enrollment;
 
 class Course extends Model
 {
@@ -16,21 +17,17 @@ class Course extends Model
     protected $fillable = [
         'title',
         'description',
-        'instructor_id',
+        'thumbnail',
+        'is_active',
     ];
 
-    // Relasi ke User sebagai instruktur
-    public function instructor()
+    public function modules()
     {
-        return $this->belongsTo(User::class, 'instructor_id');
+        return $this->hasMany(Module::class);
     }
 
-    // Relasi ke User sebagai mahasiswa (pivot)
-    public function students()
+    public function enrollments()
     {
-        return $this->belongsToMany(User::class, 'course_user')
-            ->withTimestamps()
-            ->withPivot('enrolled_at', 'progress');
-
+        return $this->hasMany(Enrollment::class);
     }
 }

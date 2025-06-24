@@ -16,8 +16,13 @@ class CourseModuleFactory extends Factory
      */
     public function definition(): array
     {
+        $types = ['text', 'video', 'quiz'];
+
         return [
-            //
+            'title' => $this->faker->sentence(4),
+            'type' => $this->faker->randomElement($types),
+            'content' => $this->faker->paragraphs(2, true),
+            'order' => $this->faker->numberBetween(1, 10),
         ];
     }
 }

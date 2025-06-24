@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->foreignId('instructor_id')->constrained('users')->onDelete('cascade');
+            $table->string('thumbnail')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
