@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Course;
+use App\Models\ContactChannel;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\UserProfile;
 use Illuminate\Database\Seeder;
+use Database\Seeders\UserManagementSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,8 +15,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(1000)->create();
-
-        Course::factory()->create();
+        $this->call([
+            UserManagementSeeder::class,
+        ]);
     }
 }

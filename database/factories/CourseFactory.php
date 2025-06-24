@@ -24,7 +24,7 @@ class CourseFactory extends Factory
         return [
             'title' => $this->faker->sentence(4),
             'description' => $this->faker->paragraph,
-            'instructor_id' => User::factory()->create(['role' => 'instructor'])->id,
+            // 'instructor_id' => User::factory()->create(['role' => 'instructor'])->id,
         ];
     }
 }

@@ -15,31 +15,63 @@ class UsersTable
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->searchable(),
+                    ->label('Username')
+                    ->searchable()
+                    ->sortable()
+                    ->description(fn ($record) => 'ID: '.$record->id)
+                    ->tooltip('Nama pengguna untuk login')
+                    ->weight('medium')
+                    ->toggleable(),
+
                 TextColumn::make('email')
-                    ->searchable(),
+                    ->copyable()
+                    ->copyMessage('Email copied')
+                    ->copyMessageDuration(1500)
+                    ->tooltip('Klik untuk salin email')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
+
                 TextColumn::make('email_verified_at')
-                    ->dateTime()
-                    ->sortable(),
+                    ->label('Verified At')
+                    ->dateTime('d M Y, H:i')
+                    ->sortable()
+                    ->badge()
+                    ->color(fn ($state) => $state ? 'success' : 'gray')
+                    ->tooltip(fn ($state) => $state ? 'Email sudah diverifikasi' : 'Belum diverifikasi')
+                    ->toggleable(),
+
                 TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('Created')
+                    ->dateTime('d M Y, H:i')
                     ->sortable()
+                    ->color('info')
+                    ->tooltip('Tanggal akun dibuat')
                     ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label('Updated')
+                    ->dateTime('d M Y, H:i')
                     ->sortable()
+                    ->color('warning')
+                    ->tooltip('Terakhir kali diubah')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()
+                    ->label('Ubah')
+                    ->tooltip('Edit data pengguna ini'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->label('Hapus Terpilih')
+                        ->color('danger'),
                 ]),
             ]);
+
     }
 }
