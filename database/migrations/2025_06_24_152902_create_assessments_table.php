@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('assessments', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('course_id')->constrained()->onDelete('cascade');
+            $table->string('title');
+            $table->text('description')->nullable();
+            $table->enum('type', ['pre', 'post', 'quiz'])->default('quiz');
+            $table->integer('duration_minutes')->nullable(); // opsional durasi pengerjaan
             $table->timestamps();
         });
     }

@@ -13,6 +13,15 @@ return new class extends Migration
     {
         Schema::create('assessment_attempts', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('assessment_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+
+            $table->integer('score')->nullable(); 
+            $table->integer('max_score')->nullable(); // maksimal skor
+            $table->json('answers')->nullable(); // jawaban user (bisa json: question_id => answer)
+            $table->timestamp('started_at')->nullable();
+            $table->timestamp('completed_at')->nullable();
+
             $table->timestamps();
         });
     }

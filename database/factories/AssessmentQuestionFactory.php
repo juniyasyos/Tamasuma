@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Assessment;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +17,19 @@ class AssessmentQuestionFactory extends Factory
      */
     public function definition(): array
     {
+        $options = [
+            'A' => $this->faker->word(),
+            'B' => $this->faker->word(),
+            'C' => $this->faker->word(),
+            'D' => $this->faker->word(),
+        ];
+
         return [
-            //
+            'assessment_id' => Assessment::factory(),
+            'question_text' => $this->faker->sentence(),
+            'options' => $options,
+            'correct_answer' => $this->faker->randomElement(array_keys($options)),
+            'score' => $this->faker->numberBetween(1, 5),
         ];
     }
 }
