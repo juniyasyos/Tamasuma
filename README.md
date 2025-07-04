@@ -1,92 +1,154 @@
-Berikut adalah daftar **command `artisan` Laravel** dengan opsi `-mfs` (`--migration`, `--factory`, `--seeder`) berdasarkan struktur tabel yang sudah kita bahas.
-
-Gunakan ini di terminal pada root project Laravel kamu.
+Berikut adalah **versi revisi dan profesional dari struktur penamaan model dan schema** yang kamu buat. Tujuannya agar lebih **jelas, konsisten, dan maintainable** baik untuk pengembangan jangka panjang maupun kolaborasi tim.
 
 ---
 
-### 🧑 Manajemen Pengguna
+## ✅ Prinsip Revisi:
+
+* Gunakan **naming convention** berbasis domain.
+* Hindari nama ambigu (misal: `Session`, diganti `LiveSession`).
+* Gunakan **camel case** untuk model (PascalCase), **snake case** untuk tabel.
+* Pastikan model → tabel konsisten & mudah dibaca.
+
+---
+
+## 🧑 Manajemen Pengguna (User Management)
 
 ```bash
 php artisan make:model User -mfs
 php artisan make:model UserProfile -mfs
-php artisan make:model Role -mfs
-php artisan make:model ContactChannel -mfs
+php artisan make:model UserRole -mfs         # Lebih jelas daripada hanya Role
+php artisan make:model UserContactChannel -mfs
 ```
+
+> **Note:**
+> `ContactChannel` diganti jadi `UserContactChannel` untuk konteks lebih spesifik.
 
 ---
 
-### 📘 Sistem Pembelajaran
+## 📘 Sistem Pembelajaran (Learning Management)
 
 ```bash
-php artisan make:model Course -mfs
-php artisan make:model CourseModule -mfs
+php artisan make:model LearningCourse -mfs
+php artisan make:model LearningModule -mfs
 php artisan make:model ModuleType -mfs
-php artisan make:model Enrollment -mfs
-php artisan make:model UserProgress -mfs
+php artisan make:model CourseEnrollment -mfs
+php artisan make:model ModuleProgress -mfs
 ```
+
+> **Note:**
+
+* `Course` → `LearningCourse` untuk menghindari konflik jika ada `CertificateCourse` nanti.
+* `CourseModule` → `LearningModule` (lebih natural).
+* `Enrollment` → `CourseEnrollment`
+* `UserProgress` → `ModuleProgress` (lebih kontekstual)
 
 ---
 
-### 🧪 Penilaian
+## 🧪 Penilaian (Assessment)
 
 ```bash
 php artisan make:model Assessment -mfs
-php artisan make:model AssessmentQuestion -mfs
-php artisan make:model AssessmentAttempt -mfs
+php artisan make:model AssessmentItem -mfs        # Lebih baik dari 'Question'
+php artisan make:model AssessmentSubmission -mfs  # Lebih natural dari 'Attempt'
 ```
+
+> **Note:**
+
+* `AssessmentQuestion` → `AssessmentItem` (karena bisa soal atau perintah)
+* `AssessmentAttempt` → `AssessmentSubmission` (menekankan hasil dari user)
 
 ---
 
-### 📅 Sesi Sinkron (Live)
+## 📅 Sesi Sinkron (Live Sessions)
 
 ```bash
-php artisan make:model Session -mfs
-php artisan make:model SessionAttendance -mfs
+php artisan make:model LiveSession -mfs
+php artisan make:model LiveSessionAttendance -mfs
 ```
+
+> **Note:**
+> `Session` diganti karena akan konflik dengan Laravel native session.
 
 ---
 
-### 🎓 Sertifikat & Keterampilan
+## 🎓 Sertifikat & Keterampilan
 
 ```bash
-php artisan make:model Certificate -mfs
-php artisan make:model Skill -mfs
-php artisan make:model UserSkill -mfs
+php artisan make:model CompletionCertificate -mfs
+php artisan make:model MasteredSkill -mfs
+php artisan make:model UserSkillMap -mfs
 ```
+
+> **Note:**
+
+* `Certificate` → `CompletionCertificate`
+* `Skill` → `MasteredSkill` (jika konteksnya keterampilan yang dinilai)
+* `UserSkill` → `UserSkillMap` (menghindari ambiguitas)
 
 ---
 
-### 💬 Dukungan & Feedback
+## 💬 Dukungan & Feedback
 
 ```bash
-php artisan make:model SupportTicket -mfs
-php artisan make:model TicketMessage -mfs
+php artisan make:model SupportRequest -mfs
+php artisan make:model SupportMessage -mfs
 ```
+
+> **Note:**
+> Lebih baik daripada `Ticket`, yang bisa ambigu dengan event ticketing.
 
 ---
 
-### 🏢 Kelembagaan (Opsional)
+## 🏢 Kelembagaan
 
 ```bash
-php artisan make:model Organization -mfs
-php artisan make:model OrganizationUser -mfs
+php artisan make:model PartnerOrganization -mfs
+php artisan make:model OrganizationMember -mfs
 ```
+
+> **Note:**
+
+* `Organization` bisa jadi terlalu umum
+* `OrganizationUser` → `OrganizationMember`
 
 ---
 
-### 📢 Komunikasi & Logging
+## 📢 Komunikasi & Logging
 
 ```bash
-php artisan make:model Notification -mfs
-php artisan make:model AuditLog -mfs
-php artisan make:model ActivityLog -mfs
+php artisan make:model SystemNotification -mfs
+php artisan make:model SystemAuditLog -mfs
+php artisan make:model UserActivityLog -mfs
 ```
+
+> **Note:**
+
+* Prefix dengan `System` atau `User` untuk kontekstualisasi
+* Menghindari nama generic seperti `Log`
 
 ---
 
-### 📝 Tips:
+## 📌 Kesimpulan Perubahan:
 
-* Gunakan `php artisan migrate` setelah selesai membuat dan menyesuaikan file migration.
-* Untuk membuat seluruh struktur secara otomatis (misal saat awal development), kamu bisa tulis semua command ini di dalam 1 shell script (`init-models.sh`), lalu jalankan sekaligus.
+| Lama                 | Revisi Baru             | Alasan                                              |
+| -------------------- | ----------------------- | --------------------------------------------------- |
+| `Course`             | `LearningCourse`        | Lebih deskriptif dan tidak ambigu                   |
+| `CourseModule`       | `LearningModule`        | Konsistensi penamaan                                |
+| `Enrollment`         | `CourseEnrollment`      | Menjelaskan konteks                                 |
+| `UserProgress`       | `ModuleProgress`        | Lebih tepat & modular                               |
+| `AssessmentQuestion` | `AssessmentItem`        | Bisa soal atau tugas                                |
+| `AssessmentAttempt`  | `AssessmentSubmission`  | Lebih representatif (hasil upaya user)              |
+| `Session`            | `LiveSession`           | Hindari bentrok dengan Laravel session              |
+| `Certificate`        | `CompletionCertificate` | Jelaskan bahwa ini hasil kelulusan                  |
+| `ContactChannel`     | `UserContactChannel`    | Lebih kontekstual                                   |
+| `SupportTicket`      | `SupportRequest`        | Lebih profesional dan natural dalam konteks bantuan |
 
-Kalau kamu ingin saya bantu buatkan *file ERD*, isi migration-nya, atau seeder contoh (dummy data), tinggal beri tahu saja bagian mana yang mau diprioritaskan.
+---
+
+Kalau kamu setuju dengan struktur ini, saya bisa bantu:
+
+* Rename semua model & tabelnya
+* Sesuaikan seeder dan relasinya
+* Buat ERD (Entity Relationship Diagram) untuk memudahkan visualisasi tim
+
+Mau dilanjut ke bagian mana dulu?
